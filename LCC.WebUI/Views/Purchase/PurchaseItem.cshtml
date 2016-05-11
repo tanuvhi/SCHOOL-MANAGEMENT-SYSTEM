@@ -1,0 +1,250 @@
+﻿@model LCC.Domain.Entities.PurchaseList
+
+@{
+    ViewBag.Title = "PurchaseItem";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<h2>PurchaseItem</h2>
+
+<p>
+  
+</p>
+<br />
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+      
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <form id='students' method='post' name='students' >
+
+            <div class="form-group">
+                @Html.Label("Puchase Date", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBox("PurchaseDate", null, new { @class = "form-control", id = "datepicker", required = string.Empty })
+                   
+                </div>
+            </div>
+            <table border="1" cellspacing="0">
+                <tr>
+                    <th><input class='check_all' type='checkbox' onclick="select_all()" /></th>
+                    <th>S. No</th>
+                    <th>Item Name</th>
+                    <th>Quantity </th>
+                    <th>Total Price</th>
+              
+                </tr>
+                <tr>
+                    <td><input type='checkbox' class='case' /></td>
+                    <td>1.</td>
+                  
+                    <td><input type='text' id='Item_name1' class="pagerlink" name='Item_name[]' onchange="clearAutoCompleteInput(this.id)" required /></td>
+                    <td><input type='number' id='Quantiy' step="0.001"  name='Quantiy[]' required /></td>
+                    <td ><input type='number' id='Total_Price' step="0.001" name='Total_Price[]' class="price" required /> </td>
+                    <td style='display:none;'><input type='number' id='ItemId1' class='ItemIdC' name='ItemId[]' hidden /></td>
+                </tr>
+            </table>
+           
+           
+            
+                <button type="button" class='delete'>- Delete</button>
+                <button type="button" class='addmore'>+ Add More</button>
+                       <h1><span id="sum" style="float:right">৳0</span></h1>
+            <br/>
+            <br />
+                <p>
+                    <input type='submit' name='submit' value='submit' class='but' />
+                </p>
+</form>
+
+      </div>
+     
+}
+<div>
+    @Html.ActionLink("Back to List", "TodayInsertedList")
+  
+</div>
+@{
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> 
+  
+<script src="~/Scripts/jquery-2.2.0.min.js"></script>
+    <style>
+	font-face{font-family: Lobster;src: url('Lobster.otf');}
+	h1{font-family: Lobster;text-align:center;}
+	table{border-collapse:collapse;border-radius:25px;width:880px;}
+	table, td, th{border:1px solid #00BB64;}
+	tr,input{height:30px;border:1px solid #fff;}
+	input{text-align:center;}
+	input:focus{border:1px solid yellow;} 
+	.space{margin-bottom: 2px;}
+	#container{margin-left:210px;}
+	.but{width:270px;background:#00BB64;border:1px solid #00BB64;height:40px;border-radius:3px;color:white;margin-top:10px;margin:0px 0px 0px 290px;}
+</style>
+<script>
+var i=2;
+
+$(".addmore").on('click',function(){
+    var data="<tr><td><input type='checkbox' class='case'/></td><td>"+i+".</td>";
+    data += "<td><input type='text' id='Item_name" + i + "' class='pagerlink' onchange='clearAutoCompleteInput(this.id)' name='Item_name[]' required/></td>"
+        + " <td><input type='number' step='0.001' id='Quantiy" + i + "' name='Quantiy[]' required/></td>"
+        + "<td><input type='number' step='0.001' id='Total_Price" + i + "' name='Total_Price[]' class='price' required/></td>"
+        + "<td style='display:none;' ><input type='number' id='ItemId" + i + "' class='ItemId' name='ItemId[]' hidden/></td>";
+    $('table').append(data);
+    
+	i++;
+});
+</script>
+    
+    <script>
+$(".delete").on('click', function() {
+	$('.case:checkbox:checked').parents("tr").remove();
+
+});
+</script>
+    
+    <script>
+function select_all() {
+	$('input[class=case]:checkbox').each(function(){ 
+		if($('input[class=check_all]:checkbox:checked').length == 0){ 
+			$(this).prop("checked", false); 
+		} else {
+			$(this).prop("checked", true); 
+		} 
+	});
+}
+
+</script>
+}
+
+@section Scripts {
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+    <script type="text/javascript">
+      
+
+        function clearAutoCompleteInput( id) {
+           var $tid= $("#"+id)
+           $tid.val('');
+        }
+     
+        $(document).on("input", '.pagerlink', function () {
+        
+            var $id = $(this).attr("id");
+            var regex = /^[a-zA-Z]+$/;
+            $iidd = 0;
+            for (jj = 0; jj < $id.length ; jj++) {
+
+                if (!$id[jj].match(regex)) {
+
+                    $iidd = $iidd * 10 + parseInt($id[jj]);
+                }
+            }
+
+            var $itmeId = $("#ItemId" + $iidd);
+           
+            $('input.pagerlink').autocomplete({
+                source: function (request, response) {
+             
+                    $.ajax({
+                        url: "/Purchase/INameAutoComplite",
+                        type: "POST",
+                        dataType: "json",
+                        data: { term: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                            
+                                return {
+                                    label: item.Name,
+                                    value1 :item.Id
+
+                                };
+
+                            }))
+
+                        }
+                    })
+                },
+                messages: {
+                    noResults: "", results: ""
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $(this).val(ui.item.label);
+                    $itmeId.val(ui.item.value1);
+                   
+
+                    return false;
+                }
+
+            });
+        });
+
+
+        $(document).on("input", '.price', function () {
+
+            //iterate through each textboxes and add keyup
+            //handler to trigger sum event
+            $("input.price").each(function () {
+            
+                $(this).keyup(function () {
+                    calculateSum();
+                });
+            });
+
+        });
+
+        function calculateSum() {
+
+            var sum = 0;
+            //iterate through each textboxes and add the values
+            $("input.price").each(function () {
+          
+                //add only if the value is number
+                if (!isNaN(this.value) && this.value.length != 0) {
+                    sum += parseFloat(this.value);
+                }
+
+            });
+            //.toFixed() method will roundoff the final sum to 2 decimal places
+            $("#sum").html("৳" + sum.toFixed(2));
+        }
+    </script>
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+<style>
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+</style>
+<script>
+
+    $(function () {
+        $("#datepicker").datepicker({
+            dateFormat: 'dd-M-yy',
+            maxDate: '0',
+            minDate: -7
+        }).val();
+    });
+
+
+
+</script>
+
+}

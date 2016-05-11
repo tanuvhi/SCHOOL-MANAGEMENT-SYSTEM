@@ -1,0 +1,202 @@
+﻿@model LCC.WebUI.Models.UserModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<h2>Registration</h2>
+
+
+    @using (Html.BeginForm("Register", "User", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <hr />
+        @Html.ValidationSummary(true)
+    
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.user.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.FatherName, new { @class = "control-label col-md-2 " })
+            <div class="col-md-10">
+               
+                @Html.TextBoxFor(model => model.user.FatherName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.FatherName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.MotherName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+          
+                @Html.TextBoxFor(model => model.user.MotherName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.MotherName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.UserPhone, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+              
+                @Html.TextBoxFor(model => model.user.UserPhone, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.UserPhone)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.GuardianPhone, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+            
+                @Html.TextBoxFor(model => model.user.GuardianPhone, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.GuardianPhone)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.PresentAddress, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+             
+                @Html.TextBoxFor(model => model.user.PresentAddress, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.PresentAddress)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.PermanentAddress, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+        
+                @Html.TextBoxFor(model => model.user.PermanentAddress, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.PermanentAddress)
+            </div>
+        </div>
+
+  
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.UserStatusId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                
+             @Html.DropDownListFor(model => model.user.UserStatusId, ViewBag.UserStatus as SelectList, new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.user.UserStatusId)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.DOB, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+              
+                @Html.TextBoxFor(model => model.user.DOB, new { @class = "form-control", id = "datepicker" })
+                @Html.ValidationMessageFor(model => model.user.DOB)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.GenderId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+          
+                @Html.DropDownListFor(model => model.user.GenderId, ViewBag.Gender as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.GenderId)
+            </div>
+        </div>
+        
+                <div class="form-group">
+            @Html.LabelFor(model => model.File, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+            
+                <input type="file" name="File" accept="image/*" id="File"  />
+
+             
+                <div id="dvPreview">
+
+                </div>
+            </div>
+        </div>
+    
+   
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Sign Up" class="btn  btn-success" />
+            </div>
+        </div>
+
+    }
+
+
+
+
+@section Scripts {
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+<style>
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+</style>
+
+
+
+<script type="text/javascript">
+  
+
+    window.onload = function () {
+        var fileUpload = document.getElementById("File");
+        fileUpload.onchange = function () {
+          
+            if (typeof (FileReader) != "undefined") {
+                var dvPreview = document.getElementById("dvPreview");
+                dvPreview.innerHTML = "";
+                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+                for (var i = 0; i < fileUpload.files.length; i++) {
+                    var file = fileUpload.files[i];
+
+                    if (regex.test(file.name.toLowerCase())) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            var img = document.createElement("IMG");
+                            img.height = "150";
+                            img.width = "150";
+
+                            img.src = e.target.result;
+
+                            dvPreview.appendChild(img);
+
+                        }
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert(file.name + " is not a valid image file.");
+                        dvPreview.innerHTML = "";
+                        return false;
+                    }
+                }
+            } else {
+                alert("This browser does not support HTML5 FileReader.");
+            }
+        }
+    };
+
+    $(function () {
+        $("#datepicker").datepicker({ dateFormat: 'dd-mm-yy' }).val();;
+
+    });
+</script>
+
+
+
+
+
+    }
+
+
+

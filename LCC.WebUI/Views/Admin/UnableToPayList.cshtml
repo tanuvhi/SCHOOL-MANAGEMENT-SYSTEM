@@ -1,0 +1,279 @@
+﻿
+@{
+    ViewBag.Title = "UnableToPayList";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<div class="form-group col-md-4">
+    <button class="btn  btn-group-justified  btn-primary " id="Pending">Pending List</button>
+</div>
+<div class="form-group col-sm-4">
+    <button class="btn btn-group-justified btn-success " id="Approve">Approved List</button>
+</div>
+<div class="form-group col-sm-4">
+    <button class="btn btn-group-justified  btn-danger " id="Disprove">Disproved List </button>
+</div>
+
+<table id="tblProducts" >
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Student Name")
+            </th>
+            <th>
+                @Html.DisplayName("Paid Date")
+            </th>
+            <th>
+                @Html.DisplayName("Paid Amount")
+            </th>
+
+            <th>
+                @Html.DisplayName("Due")
+            </th>
+            <th>
+                @Html.DisplayName("Unable TO Pay Amount")
+            </th>
+          
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+        </tr>
+        </thead>
+
+<tbody></tbody>
+
+</table>
+
+@section Scripts {
+
+
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#Pending").bind("click", function () {
+
+            $("#tblProducts").show();
+            $("#tblProducts tbody tr").remove();
+
+
+            $.ajax({
+
+                type: 'POST',
+
+                url: '@Url.Action("PendingList")',
+                dataType: 'json',
+
+                success: function (data) {
+                    var items = '';
+
+                    $.each(data, function (i, item) {
+
+                        var rows = "<tr>"
+                        + "<td class='prtoducttd'>" + item.Name + "</td>"
+                        + "<td class='prtoducttd'>" + item.PaymentDate + "</td>"
+                        + "<td class='prtoducttd'>" + item.AmountPaid + "</td>"
+                         + "<td class='prtoducttd'>" + item.Due + "</td>"
+                       
+                         + "<td class='prtoducttd'>" + item.UnableToPay + "</td>"
+                         + "<td class='prtoducttd'>  <button class='btn btn-success Approve'  id='Approved' value='"+item.id+"'>Approve</button> </td>"
+                         + "<td class='prtoducttd'>  <button class='btn btn-danger' id='Disproved'  value='" + item.id + "'>Disprove</button> </td>"
+                        + "</tr>";
+
+                        $('#tblProducts tbody').append(rows);
+                    });
+
+                },
+                error: function (ex) {
+                    var r = jQuery.parseJSON(response.responseText);
+                    alert("Message: " + r.Message);
+                    alert("StackTrace: " + r.StackTrace);
+                    alert("ExceptionType: " + r.ExceptionType);
+                }
+            });
+            return false;
+        })
+    });
+</script>
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#Approve").bind("click", function () {
+
+            $("#tblProducts").show();
+            $("#tblProducts tbody tr").remove();
+
+
+            $.ajax({
+
+                type: 'POST',
+
+                url: '@Url.Action("ApproveList")',
+                dataType: 'json',
+
+                success: function (data) {
+                    var items = '';
+
+                    $.each(data, function (i, item) {
+
+                        var rows = "<tr>"
+                        + "<td class='prtoducttd'>" + item.Name + "</td>"
+                        + "<td class='prtoducttd'>" + item.PaymentDate + "</td>"
+                        + "<td class='prtoducttd'>" + item.AmountPaid + "</td>"
+                         + "<td class='prtoducttd'>" + item.Due + "</td>"
+
+                         + "<td class='prtoducttd'>" + item.UnableToPay + "</td>"
+                         + "<td class='prtoducttd'>  <button class='btn btn-success' id='Approved '  value='" + item.id + "'>Approve</button> </td>"
+                         + "<td class='prtoducttd'>  <button class='btn btn-danger' id='Disprove'  value='" + item.id + "'>Disprove</button> </td>"
+                        + "</tr>";
+
+                        $('#tblProducts tbody').append(rows);
+                    });
+
+                },
+                error: function (ex) {
+                    var r = jQuery.parseJSON(response.responseText);
+                    alert("Message: " + r.Message);
+                    alert("StackTrace: " + r.StackTrace);
+                    alert("ExceptionType: " + r.ExceptionType);
+                }
+            });
+            return false;
+        })
+    });
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#Disprove").bind("click", function () {
+
+            $("#tblProducts").show();
+            $("#tblProducts tbody tr").remove();
+
+            $.ajax({
+
+                type: 'POST',
+
+                url: '@Url.Action("DisproveList")',
+                dataType: 'json',
+
+                success: function (data) {
+                    var items = '';
+
+                    $.each(data, function (i, item) {
+
+                        var rows = "<tr>"
+                        + "<td class='prtoducttd'>" + item.Name + "</td>"
+                        + "<td class='prtoducttd'>" + item.PaymentDate + "</td>"
+                        + "<td class='prtoducttd'>" + item.AmountPaid + "</td>"
+                         + "<td class='prtoducttd'>" + item.Due + "</td>"
+
+                         + "<td class='prtoducttd'>" + item.UnableToPay + "</td>"
+                         + "<td class='prtoducttd'>  <button class='btn btn-success Appved' id='Approved'  value='" + item.id + "'>Approve</button> </td>"
+                         + "<td class='prtoducttd'>  <button class='btn btn-danger' id='Disproved'  value='" + item.id + "'>Disprove</button> </td>"
+                        + "</tr>";
+
+                        $('#tblProducts tbody').append(rows);
+                    });
+
+                },
+                error: function (ex) {
+                    var r = jQuery.parseJSON(response.responseText);
+                    alert("Message: " + r.Message);
+                    alert("StackTrace: " + r.StackTrace);
+                    alert("ExceptionType: " + r.ExceptionType);
+                }
+            });
+            return false;
+        })
+    });
+</script>
+
+<script type="text/javascript">
+
+
+
+    $(document).on('click', '#Disproved', function () {
+
+        alert($(this).attr('value'));
+        $.ajax({
+            url: "/Admin/Disprove",
+            type: "POST",
+            dataType: "json",
+            data: { id: $(this).attr('value') }
+        })
+
+    });
+</script>
+
+
+
+<script type="text/javascript">
+
+   
+
+    $(document).on('click', '#Approved', function () {
+      
+   
+            $.ajax({
+                url: "/Admin/Approve",
+                type: "POST",
+                dataType: "json",
+                data: { id: $(this).attr('value') }
+
+            })
+
+    });
+</script>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        /* Zebra striping */
+        tr:nth-of-type(odd) {
+            background: #eee;
+        }
+
+        th {
+            background: #333;
+            color: white;
+            font-weight: bold;
+        }
+
+        td, th {
+            padding: 6px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+    </style>
+
+
+}

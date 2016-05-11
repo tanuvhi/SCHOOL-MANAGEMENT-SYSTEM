@@ -1,0 +1,86 @@
+﻿@model LCC.WebUI.Models.StudentModel 
+
+@{
+    ViewBag.Title = "PaymentConfirmation";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+   
+    @Html.HiddenFor(m=>m.paymentConfirmation.Id)
+     @Html.HiddenFor(m=>m.paymentConfirmation.TotalPayableId)
+     @Html.HiddenFor(m=>m.paymentConfirmation.QRCode)
+    @Html.HiddenFor(m=>m.paymentConfirmation.AmountPaid)
+    @Html.HiddenFor(m=>m.paymentConfirmation.ConfirmBy)
+     @Html.HiddenFor(m=>m.paymentConfirmation.PaymentDate)
+    
+     @Html.HiddenFor(m=>m.totalPayable.Id)
+      @Html.HiddenFor(m=>m.totalPayable.StudentId)
+      @Html.HiddenFor(m=>m.totalPayable.Month)
+       @Html.HiddenFor(m=>m.totalPayable.Amount)
+       @Html.HiddenFor(m=>m.totalPayable.Deduction)
+       @Html.HiddenFor(m=>m.totalPayable.PrevBalance)
+       @Html.HiddenFor(m=>m.totalPayable.NetTotal)
+       @Html.HiddenFor(m=>m.totalPayable.AmountPaid)
+    @Html.HiddenFor(m=>m.totalPayable.Balance)
+     @Html.HiddenFor(m=>m.totalPayable.AcademicYearId)
+   
+   
+       @Html.HiddenFor(m=>m.paymentConfirmation.Id)
+   
+    <div class="form-horizontal">
+        <h4>Payment Confirmation</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.Label("Name", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Model.user.Name
+                
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Father's Name", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Model.user.FatherName
+
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Payment Code", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Model.paymentConfirmation.Id
+
+            </div>
+        </div>
+
+   
+        <div class="form-group">
+            @Html.Label("Amount Paid", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Model.paymentConfirmation.AmountPaid
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Balance ", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+              @Model.totalPayable.Balance  
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <a href="/Student/PaymentConfirmation1" class="btn btn-danger">Cancel</a> 
+                <input type="submit" value="Confirm" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+

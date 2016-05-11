@@ -1,0 +1,200 @@
+﻿@model LCC.WebUI.Models.StudentModel
+@{
+    ViewBag.Title = "StudentPayment";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+
+}
+
+<h2>Student Payment</h2>
+
+<div class="row " style="padding-top:20px">
+    <a class="btn btn-success" id="Fee">Update All Student Fee</a>
+
+
+    <div class="col-lg-12 col-md-12">
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        }
+        @if (TempData["UnsuccessMessage"] != null)
+        {
+            <div class="alert alert-danger">@TempData["UnsuccessMessage"]</div>
+        }
+    </div>
+    <div class="form-group">
+        @Html.Label("Academic Year", new { @class = "control-label col-sm-2" })
+        <div class="col-sm-2">
+            @Html.DropDownListFor(model => model.academicYear.Id, ViewBag.Year as SelectList, new { @class = "form-control", id = "Year" })
+
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Class", new { @class = "control-label col-sm-1 " })
+
+        <div class="col-sm-2">
+            @Html.DropDownListFor(model => model.classe.ClassId, ViewBag.Class as SelectList, new { @class = "form-control", id = "Class" })
+
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Student Category", new { @class = "control-label col-sm-1" })
+        <div class="col-sm-2">
+            @Html.DropDownListFor(model => model.studentCategory.Id, ViewBag.StudentCategory as SelectList, new { @class = "form-control", id = "CategoryType" })
+
+        </div>
+    </div>
+
+    <div class="form-group col-sm-2">
+        <button class="btn btn-success " id="view">View</button>
+    </div>
+
+    <div class=" col-xs-4 ">
+        @Html.ValidationMessageFor(model => model.classe.ClassId)
+    </div>
+    <div class="col-xs-4 ">
+        @Html.ValidationMessageFor(model => model.studentCategory.Id)
+    </div>
+
+</div>
+
+
+
+<br />
+
+<div>
+    <table id="tblProducts" class="list">
+        <thead>
+            <tr>
+                <th align="left" class="table-Header stid">Student ID</th>
+                <th align="left" class="table-Header Name">Name</th>
+                <th align="left" class="table-Header Father">Father's Name</th>
+                <th align="left" class="table-Header Class">Class</th>
+                <th align="left" class="table-Header Category">Student Category</th>
+
+                <th align="left" class="table-Header Guardian"> Guardian phone no</th>
+                <th align="left" class="table-Header year">Year</th>
+
+                <th align="left" class="table-Header Due">Due</th>
+                <th align="left" class="table-Header Due"></th>
+            </tr>
+        </thead>
+
+        <tbody></tbody>
+    </table>
+</div>
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+@{
+
+
+    <style type="text/css">
+        .tblProducts {
+            font-family: 'OleoScript-Regular';
+            font-size: 11px;
+            color: white;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+        }
+
+        .productth {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: black;
+        }
+
+        .prtoducttd {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+
+        .input-validation-error {
+            border: 1px solid #ff0000;
+            background-color: #ffeeee;
+        }
+    </style>
+}
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#view").bind("click", function () {
+
+            $("#tblProducts").show();
+            $("#tblProducts tbody tr").remove();
+
+
+            $.ajax({
+
+                type: 'POST',
+
+                url: '@Url.Action("CheakName")',
+                dataType: 'json',
+                data: { categoryId: $("#CategoryType").val(), classId: $("#Class").val(), yearId: $("#Year").val() },
+                success: function (data) {
+                    var items = '';
+
+                    $.each(data, function (i, item) {
+                      
+                        var rows = "<tr>"
+                        + "<td class='prtoducttd'>" + item.StId + "</td>"
+                        + "<td class='prtoducttd'>" + item.Name + "</td>"
+
+                        + "<td class='prtoducttd'>" + item.FatherName + "</td>"
+
+                        + "<td class='prtoducttd'>" + item.Classe + "</td>"
+
+                        + "<td class='prtoducttd'>" + item.Category + "</td>"
+
+                        + "<td class='prtoducttd'>" + item.GuardianPhone + "</td>"
+
+                       + "<td class='prtoducttd'>" + item.Year+ "</td>"
+
+                       + "<td class='prtoducttd'>"+ item.Due+"</td>"
+                       + "<td class='prtoducttd'><a   href='/Student/RowClick?StudnetId=" + item.StId + "&Acid=" + item.YID + "&Months=15'>View</a></td>"
+                        + "</tr>";
+
+                        $('#tblProducts tbody').append(rows);
+                    });
+
+                },
+                error: function (ex) {
+                    var r = jQuery.parseJSON(response.responseText);
+                    alert("Message: " + r.Message);
+                    alert("StackTrace: " + r.StackTrace);
+                    alert("ExceptionType: " + r.ExceptionType);
+                }
+            });
+            return false;
+        })
+    });
+
+
+
+    //row click
+
+
+    $(document).ready(function () {
+
+        $("#Fee").bind("click", function () {
+            $.ajax({
+                url: "/Student/UpdateFee",
+                type: "POST",
+                dataType: "json",
+
+            })
+
+
+        })
+    });
+    </script>
+
+}

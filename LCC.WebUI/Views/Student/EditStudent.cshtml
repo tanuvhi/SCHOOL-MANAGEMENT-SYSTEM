@@ -1,0 +1,209 @@
+﻿@model LCC.WebUI.Models.StudentModel
+
+@{
+    ViewBag.Title = "EditStudent";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<h2>EditStudent</h2>
+
+<div class="col-lg-12 col-md-12">
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["UnsuccessMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["UnsuccessMessage"]</div>
+    }
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model=>model.user.UserId)
+    @Html.HiddenFor(model => model.user.Id)
+    @Html.HiddenFor(model=>model.student.Id)
+    @Html.HiddenFor(model=>model.user.ImageUrl)
+    @Html.HiddenFor(model=>model.user.UserStatusId)
+    @Html.HiddenFor(model=>model.user.Activity)
+    @Html.HiddenFor(model=>model.user.Password)
+    @Html.HiddenFor(model=>model.student.UserId)
+    <div class="form-horizontal">
+        <h4>Student</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+           
+            @Html.LabelFor(model => model.user.Name , new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.user.Name, new { @class = "form-control" })
+             
+                @Html.ValidationMessageFor(model => model.user.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.FatherName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.user.FatherName, new { @class = "form-control" })
+       
+                @Html.ValidationMessageFor(model => model.user.FatherName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.MotherName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.user.MotherName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.MotherName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.UserPhone, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.user.UserPhone, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.UserPhone)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.GuardianPhone, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.user.GuardianPhone, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.GuardianPhone)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.PresentAddress, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.user.PresentAddress, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.PresentAddress)
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.PermanentAddress, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.user.PermanentAddress, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.user.PermanentAddress)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.user.DOB, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.user.DOB, new { @class = "form-control", id = "datepicker1", required = string.Empty })
+                @Html.ValidationMessageFor(model => model.user.DOB)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.Label("Gender", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model=>model.user.GenderId, ViewBag.Gender as SelectList , new { @class = "form-control" })
+         
+                @Html.ValidationMessageFor(model => model.user.GenderId)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.student.AcademicYearId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.student.AcademicYearId, ViewBag.Year as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.student.AcademicYearId)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.student.ClassId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.student.ClassId, ViewBag.Class as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.student.ClassId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.student.SectionId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.student.SectionId, ViewBag.Section as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.student.SectionId)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.student.StudentCategoryId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.student.StudentCategoryId, ViewBag.StudentCategory as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.student.StudentCategoryId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.student.FirstDayOfClass, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.student.FirstDayOfClass, new { @class = "form-control", id = "datepicker2", required = string.Empty })
+                @Html.ValidationMessageFor(model => model.student.FirstDayOfClass)
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.user.Id)
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+
+    <script>
+
+        $(function () {
+            $("#datepicker1").datepicker({
+                dateFormat: 'dd-M-yy',
+          
+            }).val();
+        });
+
+
+
+    </script>
+
+
+<script>
+
+    $(function () {
+        $("#datepicker2").datepicker({
+            dateFormat: 'dd-M-yy',
+         
+        }).val();
+    });
+
+
+
+</script>
+
+}

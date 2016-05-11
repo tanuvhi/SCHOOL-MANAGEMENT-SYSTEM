@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+
+                @if (Session["MyKey"] != null)
+                {
+                    if (Session["MyKey"].ToString() == "1")
+                    {
+                        @Html.ActionLink("Hello " + Session["Name"] + "!", "AcademicYear", "Admin", routeValues: null, htmlAttributes: new { title = "Manage" })
+                    }
+                    else  if (Session["MyKey"].ToString() == "2")
+                    {
+                        @Html.ActionLink("Hello " + Session["Name"] + "!", "StudentPayment", "Student", routeValues: null, htmlAttributes: new { title = "Manage" })
+                    }
+                    else
+                    {
+
+                        @Html.ActionLink("Hello " + Session["Name"] + "!", "Index", "Customer", routeValues: null, htmlAttributes: new { title = "Manage" })
+                    }
+                }
+
+            </li>
+            <li>
+                @if (User.Identity.GetUserName() != "")
+                {
+
+                    @Html.ActionLink("Log out", "Logout", "Account");
+
+                }
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a href="@Url.Action("Login", "Account")">Login</a>
+            </li>
+     
+    </ul>
+}

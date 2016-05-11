@@ -1,0 +1,266 @@
+﻿@model LCC.WebUI.Models.StudentModel
+@{
+    ViewBag.Title = "AStudentPayment";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+  
+}
+
+<form >
+   
+   
+            @Html.Label("Select Month", new { @class = "control-label col-md-2" })
+            <div class="col-md-2">
+                @Html.DropDownList("Months", ViewBag.Months as SelectList, "--Select--", new { @class = "form-control" })
+
+            </div>
+   @Html.Hidden("StudnetId", Model.user.UserId)
+    @Html.Hidden("Acid", Model.totalPayable.AcademicYearId)
+       
+        <button class="btn btn-success " id="view">View</button>
+    
+</form>
+
+
+
+<br />
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.Label("Name", new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+
+            @Model.user.Name
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Father's Name", new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+
+            @Model.user.FatherName
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Class ", new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+
+            @Model.classe.Name
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Category", new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+
+            @Model.studentCategory.Name
+        </div>
+    </div>
+
+
+</div>
+
+<div class="col-md-12" style="color:red;"><center><h2>Fee Month: @Model.month.Name</h2></center>  </div>
+<table>
+    <tr>
+        <th class="table-Header">Fee Name</th>
+        <th class="table-Header">Amount</th>
+    </tr>
+    @for (int i = 0; i < Model.payableInDetailList.Count(); i++)
+    {
+        for (int j = 0; j < Model.listOfFee.Count(); j++)
+        {
+            if (Model.payableInDetailList[i].FeeId == Model.listOfFee[j].Id)
+            {
+
+                <tr>
+                    <td> @Html.Label(Model.listOfFee[j].Name, new { id = "d" + i + "" })</td>
+                    <td>  @Html.Label(Model.payableInDetailList[i].Amount.ToString("#.##"), new { id = "am" + i + "" })</td>
+
+                </tr>
+            }
+        }
+
+    }
+
+    <tr>
+        <td> @Html.Label("Total Fee")</td>
+        <td>@Model.totalPayable.Amount</td>
+
+    </tr>
+    <tr>
+        <td> @Html.Label("Less")</td>
+        <td>@Model.totalPayable.Deduction</td>
+    </tr>
+    <tr>
+        <td> @Html.Label("previous Balance")</td>
+        <td>@Model.totalPayable.PrevBalance</td>
+
+    </tr>
+    <tr>
+        <td> @Html.Label("Net Total")</td>
+        <td>@Model.totalPayable.NetTotal</td>
+
+    </tr>
+    <tr>
+
+        <td> @Html.Label("Amount Paid")</td>
+        <td>@Model.totalPayable.AmountPaid</td>
+
+    </tr>
+    <tr>
+        <td> @Html.Label("Due")</td>
+        <td style="background-color: #5bc0de; color: white">@Model.totalPayable.Balance</td>
+
+    </tr>
+</table>
+
+
+@using (Html.BeginForm("AStudentPayment", "Student", FormMethod.Post))
+{
+    
+    @Html.HiddenFor(m => m.user.Name)
+    @Html.HiddenFor(m => m.user.FatherName)
+    @Html.HiddenFor(m => m.totalPayable.Amount)
+    @Html.HiddenFor(m => m.totalPayable.AcademicYearId)
+    @Html.HiddenFor(m => m.payableInDetailList)
+    @Html.HiddenFor(m => m.listOfFee)
+    @Html.HiddenFor(m => m.classe.Name)
+    @Html.HiddenFor(m => m.studentCategory.Name)
+    @Html.HiddenFor(m => m.month.Name)
+    @Html.HiddenFor(m => m.totalPayable.Id)
+    @Html.HiddenFor(m => m.totalPayable.Month)
+    @Html.HiddenFor(m => m.totalPayable.NetTotal)
+    @Html.HiddenFor(m => m.totalPayable.PrevBalance)
+    @Html.HiddenFor(m => m.totalPayable.Deduction)
+    @Html.HiddenFor(m => m.totalPayable.Amount)
+    @Html.HiddenFor(m => m.totalPayable.AcademicYearId)
+    
+    @Html.HiddenFor(m => m.totalPayable.Balance)
+    @Html.HiddenFor(m => m.totalPayable.StudentId)
+    
+    if (Model.month.Name == ViewBag.LastMonth)
+    { 
+    <div class="form-group">
+        @Html.Label("Amount Paid", new { @class = "control-label col-md-2" })
+        <div class="col-md-2">
+            @Html.TextBoxFor(model => model.totalPayable.AmountPaid, new { @class = "form-control", id = "amountpaid" })
+
+        </div>
+    </div>
+       <div class="form-group">
+        @Html.Label("Unable To Pay", new { @class = "control-label col-md-2" })
+        <div class="col-md-2">
+            @Html.TextBoxFor(model => model.paymentConfirmation.UnableToPay, new { @class = "form-control", id = "UnableToPay", @Value = "0" })
+
+        </div>
+    </div>
+    <input type="button" onclick="printpage();" class="btn btn-danger" value="Print">
+}
+
+}
+
+
+
+@{
+    <script>
+    function printpage() {
+        if ($("#amountpaid").val() > 0) {
+            var pamentId;
+            var amountPaid = $("#amountpaid").val();
+
+
+            var Heading = "";
+
+            Heading += '<table style="border:none; "><tr style="height:100px;"><td style="border:none;width:120px;"> *Student Copy</td>';
+            Heading += '<td style="border:none;"><center><h1>Laksam Cadet College</h1>227/A Housing State, Laksam ,Comilla, Phone:01712155933</center></td>';
+            Heading += '<td style="border:none;"> <img src="/Student/GetQRCode?totalId= @Model.totalPayable.Id &AmountPaid=' + amountPaid + '"/></td></tr></table>';
+            var getpanel = document.getElementById("<%= Panel1.ClientID%>");
+            var MainWindow = window.open('', '', 'height=500,width=800');
+            MainWindow.document.write('<html><head><title>Payment Receipt</title>');
+            MainWindow.document.write('<style> table {  border-collapse: collapse ;font-family:arial; } table, th, td {  border: 1px dotted; }  </style>');
+            MainWindow.document.write('</head><body>');
+
+            MainWindow.document.write(Heading);
+
+            $.ajax({
+
+                type: 'POST',
+
+                url: '@Url.Action("SetQRCode")',
+                dataType: 'json',
+                data: { totalId: @Model.totalPayable.Id, AmountPaid: $("#amountpaid").val(), QrCode: "dd",UnableToPay: $("#UnableToPay").val(),  },
+                success: function (data) {
+
+                    var studentInfo = '<table style="font-size:0.7em; width:100%;" >';
+                    studentInfo += '<tr><td >Name :</td><td>@Model.user.Name</td> <td>Class :</td><td>@Model.classe.Name</td></tr>';
+                    studentInfo += '<tr><td>Fathers Name :</td><td>@Model.user.FatherName</td> <td>Category :</td><td>@Model.studentCategory.Name</td></tr>';
+                    studentInfo += '<tr><td>Payment Month :</td><td>@Model.month.Name</td> <td>Payment Code :</td><td>  '+data+' </td></tr>';
+                    studentInfo += '</table>';
+
+                    var paymentList = '</br><table  style="border:none;"><tr style="border:none;"><td style="border:none;"><table style="font-size:0.7em; width:350px" ><th style="background-color:#808080">Fee Name</th><th  style="background-color:#808080">Amount</th>';
+
+                    for (var i = 0; i < 20; i++) {
+                        var fee = document.getElementById('d' + i + '');
+
+                        if (fee != null) {
+                            fee = document.getElementById('d' + i + '').innerHTML;
+                            paymentList += '<tr><td>' + fee + '</td>';
+                        }
+                        var amount = document.getElementById('am' + i + '');
+
+                        if (amount != null) {
+                            amount = document.getElementById('am' + i + '').innerHTML;
+                            paymentList += '<td>' + amount + '</td></tr>';
+                        }
+                    }
+                    paymentList += '</table></td>'
+
+                    paymentList += '<td style="border:none;"><table style="font-size:0.7em; width:320px; border:10px; " >';
+
+                    paymentList += '<tr><td style="border:none;">&nbsp;&nbsp;&nbsp;&nbsp;Fee Amount</td><td style="border:none;">@Model.totalPayable.Amount</td>'
+                    paymentList += '<tr><td style="border:none;">&nbsp;&nbsp;&nbsp;&nbsp;Less</td><td style="border:none;">@Model.totalPayable.Deduction  </td>'
+                    paymentList += '<tr><td style="border:none;">&nbsp;&nbsp;&nbsp;&nbsp;previous Balance</td><td style="border:none;">@Model.totalPayable.PrevBalance</td>'
+                    paymentList += '<tr><td style="border:none;">&nbsp;&nbsp;&nbsp;&nbsp;Net Total</td><td style="border:none;">@Model.totalPayable.NetTotal</td>'
+                    var M = $("#amountpaid").val();
+                    paymentList += '<tr><td style="border:none;">&nbsp;&nbsp;&nbsp;&nbsp;Amount Paid</td><td style="border:none;">' + M + '</td>'
+
+                    var B =@Model.totalPayable.Balance -M;
+                    paymentList += '<tr><td style="border:none;">&nbsp;&nbsp;&nbsp;&nbsp;Due</td><td style="border:none;">' + B + '</td>'
+
+                    paymentList += '</table></td></tr></table>'
+                    var sign = '</br></br><table style="width:100%;border:none;"> <tr style="border:none;"> <td style="border:none;">------------------</td><td  style="border:none;">---------------------------------</td> </tr>'
+                    sign += ' <tr style="border:none;"> <td style="border:none;">Deposited By</td><td style="border:none;">Received By(Accountant)</td> </tr></table></br></br>';                   
+                    MainWindow.document.write(studentInfo);
+                    MainWindow.document.write(paymentList);
+                    MainWindow.document.write(sign);
+                    Heading = "";
+                    Heading += '<table style="border:none; "><tr style="height:100px;"><td style="border:none;width:120px;"> *Office Copy</td>';
+                    Heading += '<td style="border:none;"><center><h1>Laksam Cadet College</h1>227/A Housing State, Laksam ,Comilla, Phone:01712155933</center></td>';
+                    Heading += '<td style="border:none;"> <img src="/Student/GetQRCode?totalId= @Model.totalPayable.Id &AmountPaid=' + amountPaid + '"/></td></tr></table>';;
+                    MainWindow.document.write(Heading);
+                    MainWindow.document.write(studentInfo);
+
+                    MainWindow.document.write(paymentList);
+
+                    MainWindow.document.write(sign);
+
+                    MainWindow.document.write('</body></html>');
+                    MainWindow.document.close();
+                    setTimeout(function () {
+                        MainWindow.print();
+                    }, 500);
+                },
+            });
+
+
+            return false;
+        }
+        else {
+            alert("Please Input Paid Amount");
+        }
+    }
+
+    </script>
+    <style>
+
+    </style>
+}
+
+

@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "AdminMenu";
+    Layout = null;
+}
+
+@Html.RouteLink("Tuition Fee Waiver", new
+                                {
+                                    controller = "Admin",
+                                    action = "UnableToPayList",
+
+                                },
+                                new
+                                {
+
+                                    @class = "  btn btn-block btn-info btn-lg "
+
+                                })
+
+@Html.RouteLink("Add New Item", new
+                                {
+                                    controller = "Purchase",
+                                    action = "AddNewItem",
+
+                                },
+                                new
+                                {
+
+                                    @class = "  btn btn-block btn-info btn-lg "
+
+                                })
+
+@Html.RouteLink("Today Purchase", new
+                                {
+                                    controller = "Purchase",
+                                    action = "TodayInsertedList",
+
+                                },
+                                new
+                                {
+
+                                    @class = "  btn btn-block btn-info btn-lg "
+
+                                })
+@Html.RouteLink("Purchase List", new
+                                {
+                                    controller = "Purchase",
+                                    action = "PurchaseList",
+
+                                },
+                                new
+                                {
+
+                                    @class = "  btn btn-block btn-info btn-lg "
+
+                                })
+
+@Html.RouteLink("Registration", new
+                                {
+                                    controller = "User",
+                                    action = "Register",
+
+                                },
+                                new
+                                {
+
+                                    @class = "btn btn-block btn-info btn-lg "
+
+                                })
+
+
+
+@Html.RouteLink("Student List", new
+                                {
+                                    controller = "Student",
+                                    action = "StudentList",
+
+                                },
+                                new
+                                {
+
+                                    @class = "  btn btn-block btn-info btn-lg "
+
+                                })
+
+@Html.RouteLink("Student Payment", new
+                                {
+                                    controller = "Student",
+                                    action = "StudentPayment",
+
+                                },
+                                new
+                                {
+
+                                    @class = "  btn btn-block btn-info btn-lg "
+
+                                })
+
+
+@Html.RouteLink("Payment Confirmation", new
+                                {
+                                    controller = "Student",
+                                    action = "PaymentConfirmation1",
+
+                                },
+                                new
+                                {
+
+                                    @class = "  btn btn-block btn-info btn-lg "
+
+                                })
+
+
+

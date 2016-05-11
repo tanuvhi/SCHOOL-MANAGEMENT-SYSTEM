@@ -1,0 +1,171 @@
+﻿@model LCC.WebUI.Models.PurchaseModel
+@{
+    ViewBag.Title = "PurchaseList";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+    string[] date = new string[500000];
+    string s = "";
+    int count = 0;
+    decimal sum = 0;
+}
+
+
+<form id='students' method='post' name='students'>
+    <div class="form-group">
+        @Html.Label("From Date", new { @class = "control-label col-sm-2 " })
+
+        <div class="col-sm-4">
+            @Html.TextBox("d1", null, new { @class = "form-control", id = "datepicker1", required = string.Empty })
+
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("To", new { @class = "control-label col-sm-1" })
+        <div class="col-sm-4">
+            @Html.TextBox("d2", null, new { @class = "form-control", id = "datepicker2", required = string.Empty })
+
+        </div>
+    </div>
+
+    <div class="form-group col-sm-1">
+        <button class="btn btn-success " id="view">View</button>
+    </div>
+</form>
+
+<br />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Purchase Date")
+        </th>
+        <th>
+            @Html.DisplayName("Item Name")
+        </th>
+        <th>
+            @Html.DisplayName("Quantity")
+        </th>
+
+        <th>
+            @Html.DisplayName("Price")
+        </th>
+
+
+
+        @if (Session["MyKey"].ToString() == "1")
+        {
+            <th>
+                @Html.DisplayName("Option")
+            </th>
+        }
+    </tr>
+
+    @foreach (var item in Model.purchaseListL)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(m => m.itemDic[item.ItemId])
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            @if (s != item.PurchaseDate.ToString())
+            {
+                date[count++] = item.PurchaseDate.ToString();
+
+            }
+            @{ s = item.PurchaseDate.ToString();
+               sum += item.Price;
+              }
+            @if (Session["MyKey"].ToString() == "1")
+            {
+                <td>
+
+                    @Html.ActionLink("Edit", "EditPurchaseItemList", new { id = item.Id }) |
+
+                    @Html.ActionLink("Delete", "DeletePurchaseItem",
+            new { id = item.Id },
+            new { onclick = "return confirm('Are you sure you wish to delete this Item?');" })
+                </td>
+            }
+        </tr>
+    }
+
+</table>
+@{ count = 0; }
+<center><h3 style="color:HighlightText">Total Spending By Date</h3></center>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Purchase Date")
+        </th>
+        <th>
+            @Html.DisplayName("Total")
+        </th>
+        </tr>
+        @foreach (var item in ViewBag.Total)
+        {
+
+            <tr>
+                <td>
+                    @date[count++].Substring(0,10)
+                </td>
+                <td>
+                    @item
+                </td>
+            </tr>
+
+        }
+    </table>
+<h1 style="float: right"> @sum</h1>
+
+        @section Scripts {
+
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+            <style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                /* Zebra striping */
+                tr:nth-of-type(odd) {
+                    background: #eee;
+                }
+
+                th {
+                    background: #333;
+                    color: white;
+                    font-weight: bold;
+                }
+
+                td, th {
+                    padding: 6px;
+                    border: 1px solid #ccc;
+                    text-align: left;
+                }
+            </style>
+
+            <script type="text/javascript">
+
+                $(function () {
+                    $("#datepicker1").datepicker({
+                        dateFormat: 'dd-M-yy',
+
+                    }).val();
+                });
+
+
+                $(function () {
+                    $("#datepicker2").datepicker({
+                        dateFormat: 'dd-M-yy',
+
+                    }).val();
+                });
+            </script>
+        }

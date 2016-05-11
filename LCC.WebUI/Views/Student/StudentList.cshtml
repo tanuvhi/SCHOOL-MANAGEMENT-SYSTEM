@@ -1,0 +1,163 @@
+﻿@model LCC.WebUI.Models.StudentModel
+@{
+    ViewBag.Title = "StudentList";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+    int co=0;
+}
+
+<h2>StudentList</h2>
+
+<form id='students' method='post' name='StudentList'>
+    <div class="form-group">
+        @Html.Label("Academic Year", new { @class = "control-label col-sm-2" })
+        <div class="col-sm-2">
+            @Html.DropDownList("Year", ViewBag.Year as SelectList, new { @class = "form-control", id = "Year" })
+
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Class", new { @class = "control-label col-sm-1 " })
+
+        <div class="col-sm-2">
+            @Html.DropDownListFor(model => model.classe.ClassId, ViewBag.Class as SelectList, new { @class = "form-control", id = "Class" })
+
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Student Category", new { @class = "control-label col-sm-1" })
+        <div class="col-sm-2">
+            @Html.DropDownListFor(model => model.studentCategory.Id, ViewBag.StudentCategory as SelectList, new { @class = "form-control", id = "CategoryType" })
+
+        </div>
+    </div>
+    <div class="form-group col-sm-1">
+        <button class="btn btn-success " id="view">View</button>
+    </div>
+</form>
+
+<br />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Student Id")
+        </th>
+        <th>
+            @Html.DisplayName("Name")
+        </th>
+        <th>
+            @Html.DisplayName("Fathers Name")
+        </th>
+
+        <th>
+            @Html.DisplayName("Mothers Name")
+        </th>
+        <th>
+            @Html.DisplayName("Guardian phone no")
+        </th>
+        <th>
+            @Html.DisplayName("Class")
+        </th>
+        <th>
+            @Html.DisplayName("Student Category")
+        </th>
+      
+        <th>
+           
+        </th>
+    </tr>
+    @try
+    {
+        
+            foreach (var item in Model.userList)
+            {
+        <tr>
+        
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+           <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => item.FatherName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MotherName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuardianPhone)
+            </td>
+            <td>
+               @Model.classeList[co].Name
+            </td>
+            <td>
+             @Model.studentCategoryList[co].Name
+            </td>
+           
+            <td>
+
+                @Html.ActionLink("Edit", "EditStudent", new { id = item.UserId , sid = item.GenderId @* item.GenderId value assaign student id *@ }) |
+                @Html.ActionLink("Details", "DetailsStudent", new { id = item.UserId }) |
+             
+           </td>
+        </tr>
+                co++;
+            }
+        
+    }
+    catch { }
+</table>
+
+
+@section Scripts {
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        /* Zebra striping */
+        tr:nth-of-type(odd) {
+            background: #eee;
+        }
+
+        th {
+            background: #333;
+            color: white;
+            font-weight: bold;
+        }
+
+        td, th {
+            padding: 6px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $("#datepicker1").datepicker({
+                dateFormat: 'dd-M-yy',
+                maxDate: '0',
+                minDate: -7
+            }).val();
+        });
+
+
+        $(function () {
+            $("#datepicker2").datepicker({
+                dateFormat: 'dd-M-yy',
+                maxDate: '0',
+                minDate: -7
+            }).val();
+        });
+    </script>
+
+
+
+}

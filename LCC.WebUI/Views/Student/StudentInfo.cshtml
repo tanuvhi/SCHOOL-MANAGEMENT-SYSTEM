@@ -1,0 +1,102 @@
+﻿@model LCC.WebUI.Models.StudentModel
+
+@{
+    ViewBag.Title = "StudentInfo";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+    
+}
+
+
+@using (Html.BeginForm("StudentInfo", "Student", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Update @ViewBag.Name Information  </h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+    
+    @Html.HiddenFor(model => model.userId)
+
+       
+        <div class="form-group">
+            @Html.LabelFor(model =>  model.student.ClassId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.student.ClassId, ViewBag.Classe as SelectList, "- -Select - -", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model =>  model.student.ClassId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Section", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DropDownListFor(model => model.student.SectionId, ViewBag.Section as SelectList, "- -Select - -", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.student.SectionId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.student.StudentCategoryId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+              @Html.DropDownListFor(model => model.student.StudentCategoryId, ViewBag.StudentCatego as SelectList, "- -Select - -", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.student.StudentCategoryId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Academic Year", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.student.AcademicYearId, ViewBag.AcademicYears as SelectList, "- -Select - -", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.student.AcademicYearId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.student.FirstDayOfClass, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.student.FirstDayOfClass, new { @class = "form-control", id = "datepicker" })
+                @Html.ValidationMessageFor(model => model.student.FirstDayOfClass)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Monthly Fee", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model=>model.scholarship.Amount, new { @class = "form-control", @type = "number" })
+                @Html.ValidationMessageFor(model => model.student.FirstDayOfClass)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn  btn-success"  />
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css">
+
+<style>
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+</style>
+<script>
+
+    $(function () {
+     
+       
+      $("#datepicker").datepicker({ dateFormat: 'dd-M-yy' }).val();
+  
+    });
+    </script>
+    }
